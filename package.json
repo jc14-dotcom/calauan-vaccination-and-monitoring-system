@@ -1,0 +1,22 @@
+{
+    "private": true,
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "build:tailwind": "npx tailwindcss -i ./resources/css/app.css -o ./public/css/tailwind-full.css --minify"
+    },
+    "devDependencies": {
+        "@tailwindcss/cli": "^4.1.7",
+        "@tailwindcss/postcss": "^4.1.5",
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.7.4",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.5.3",
+        "tailwindcss": "^2.2.19",
+        "vite": "^6.3.5"
+    }
+}

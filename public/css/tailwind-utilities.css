@@ -1,0 +1,314 @@
+/* 
+* Tailwind utilities for Infants Vaccination System
+* This file is for adding Tailwind utility classes without affecting existing styling
+*/
+
+/* Responsive utilities */
+.tw-hidden {
+    display: none !important;
+}
+
+.tw-block {
+    display: block !important;
+}
+
+.tw-flex {
+    display: flex !important;
+}
+
+.tw-grid {
+    display: grid !important;
+}
+
+.tw-items-center {
+    align-items: center !important;
+}
+
+.tw-justify-center {
+    justify-content: center !important;
+}
+
+.tw-justify-between {
+    justify-content: space-between !important;
+}
+
+.tw-justify-end {
+    justify-content: flex-end !important;
+}
+
+.tw-w-full {
+    width: 100% !important;
+}
+
+.tw-w-auto {
+    width: auto !important;
+}
+
+.tw-m-0 {
+    margin: 0 !important;
+}
+
+.tw-mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.tw-my-4 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.tw-p-4 {
+    padding: 1rem !important;
+}
+
+.tw-p-2 {
+    padding: 0.5rem !important;
+}
+
+.tw-text-center {
+    text-align: center !important;
+}
+
+.tw-text-left {
+    text-align: left !important;
+}
+
+.tw-text-right {
+    text-align: right !important;
+}
+
+.tw-rounded-lg {
+    border-radius: 0.5rem !important;
+}
+
+.tw-shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .tw-hidden-mobile {
+        display: none !important;
+    }
+
+    .tw-block-mobile {
+        display: block !important;
+    }
+
+    .tw-flex-mobile {
+        display: flex !important;
+    }
+
+    .tw-w-full-mobile {
+        width: 100% !important;
+    }
+    
+    .tw-flex-col-mobile {
+        flex-direction: column !important;
+    }
+    
+    .tw-overflow-x-auto-mobile {
+        overflow-x: auto !important;
+    }
+    
+    .tw-text-sm-mobile {
+        font-size: 0.875rem !important;
+    }
+    
+    .tw-p-2-mobile {
+        padding: 0.5rem !important;
+    }
+}
+
+/* Tablet responsive */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .tw-hidden-tablet {
+        display: none !important;
+    }
+
+    .tw-block-tablet {
+        display: block !important;
+    }
+    
+    .tw-flex-tablet {
+        display: flex !important;
+    }
+}
+
+/* Desktop responsive */
+@media (min-width: 1024px) {
+    .tw-hidden-desktop {
+        display: none !important;
+    }
+
+    .tw-block-desktop {
+        display: block !important;
+    }
+}
+
+/* Menu toggle button for mobile */
+.tw-menu-icon {
+    display: block;
+    position: relative;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.tw-menu-icon span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: #333;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+}
+
+.tw-menu-icon span:nth-child(1) {
+    top: 0;
+}
+
+.tw-menu-icon span:nth-child(2) {
+    top: 9px;
+}
+
+.tw-menu-icon span:nth-child(3) {
+    top: 18px;
+}
+
+.tw-menu-open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.tw-menu-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.tw-menu-open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Responsive table utilities */
+.tw-table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+    .tw-table-stack-mobile tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.375rem;
+    }
+    
+    .tw-table-stack-mobile td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.75rem;
+    }
+    
+    .tw-table-stack-mobile td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+    
+    .tw-table-stack-mobile thead {
+        display: none;
+    }
+}
+
+/* Custom color utilities based on your purple theme */
+.tw-bg-primary {
+    background-color: #7a5bbd !important;
+}
+
+.tw-text-primary {
+    color: #7a5bbd !important;
+}
+
+.tw-border-primary {
+    border-color: #7a5bbd !important;
+}
+
+/* Form utilities */
+.tw-form-group {
+    margin-bottom: 1rem;
+}
+
+.tw-input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+.tw-input:focus {
+    outline: none;
+    border-color: #7a5bbd;
+    box-shadow: 0 0 0 3px rgba(122, 91, 189, 0.25);
+}
+
+.tw-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.tw-btn-primary {
+    background-color: #7a5bbd;
+    color: white;
+}
+
+.tw-btn-primary:hover {
+    background-color: #6a4baa;
+}
+
+.tw-btn-secondary {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.tw-btn-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.patient-table, .status-table, .inventory-table, .upcoming-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.patient-table th, .status-table th, .inventory-table th, .upcoming-table th {
+    background-color: #7a5bbd;
+    color: white;
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+}
+.patient-table td, .status-table td, .inventory-table td, .upcoming-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+.patient-table tr:last-child td, .status-table tr:last-child td, .inventory-table tr:last-child td, .upcoming-table tr:last-child td {
+    border-bottom: none;
+}
+.patient-table tbody tr:hover, .status-table tbody tr:hover, .inventory-table tbody tr:hover, .upcoming-table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}

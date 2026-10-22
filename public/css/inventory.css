@@ -1,0 +1,157 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.inventory-table th, .inventory-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.inventory-table th {
+    background-color: #7a5bbd;
+    text-align: left;
+    color: white;
+    font-size: 18px;
+}
+
+.inventory-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.inventory-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.update-button {
+    background-color: #7a5bbd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.update-button:hover {
+    background-color: #5a3e8b;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    max-width: 400px;
+    font-size: 16px;
+    position: relative;
+    padding-bottom: 90px; /* Height of the footer */
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.quantity-input {
+    width: 150px;
+    text-align: center;
+    font-size: 16px;
+    appearance: textfield; /* Remove arrows in Firefox */
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Remove arrows in Chrome, Safari, Edge, Opera */
+}
+
+.quantity-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-buttons button {
+    padding: 10px;
+    width: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #7a5bbd;
+    color: white;
+    border-radius: 4px;
+}
+
+.quantity-buttons button:hover {
+    background-color: #5a3e8b;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align button to the right */
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: white; /* Optional */
+    border-top: 1px solid #ddd; /* Optional: Adds a line to separate footer */
+}
+
+.save-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background-color: #7a5bbd;
+    color: white;
+    border-radius: 4px;
+    margin-right: 20px; /* Push away from the right edge */
+    margin-bottom: 10px; /* Push away from bottom */
+}
+
+.save-button:hover {
+    background-color: #5a3e8b;
+}

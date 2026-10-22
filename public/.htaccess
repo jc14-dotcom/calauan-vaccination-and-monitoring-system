@@ -1,0 +1,169 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ============================================
+# BROWSER CACHING CONFIGURATION
+# Long-term caching for static assets
+# ============================================
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Default expiration: 1 month
+    ExpiresDefault "access plus 1 month"
+    
+    # HTML - no caching (dynamic content)
+    ExpiresByType text/html "access plus 0 seconds"
+    
+    # CSS - 1 year (versioned via query string or build hash)
+    ExpiresByType text/css "access plus 1 year"
+    
+    # JavaScript - 1 year (versioned)
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+    
+    # Images - 1 month
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+    
+    # Fonts - 1 year (rarely change)
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    
+    # JSON/XML - short cache (may contain dynamic data)
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType application/xml "access plus 0 seconds"
+    ExpiresByType text/xml "access plus 0 seconds"
+    
+    # Manifest - short cache (PWA updates)
+    ExpiresByType application/manifest+json "access plus 1 day"
+    ExpiresByType text/cache-manifest "access plus 0 seconds"
+    
+    # PDF and documents - 1 week
+    ExpiresByType application/pdf "access plus 1 week"
+</IfModule>
+
+# ============================================
+# CACHE-CONTROL HEADERS
+# More granular control over caching behavior
+# ============================================
+
+<IfModule mod_headers.c>
+    # Remove ETags (handled by service worker)
+    Header unset ETag
+    FileETag None
+    
+    # CSS files - long cache, immutable
+    <FilesMatch "\.(css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # JavaScript files - long cache, immutable
+    <FilesMatch "\.(js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # Font files - long cache, immutable
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # Images - long cache
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    
+    # PWA manifest - short cache (allow updates)
+    <FilesMatch "manifest\.json$">
+        Header set Cache-Control "public, max-age=86400, must-revalidate"
+    </FilesMatch>
+    
+    # Service worker - no cache (always check for updates)
+    <FilesMatch "sw\.js$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+    
+    # HTML files - no cache
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# ============================================
+# COMPRESSION (GZIP/DEFLATE)
+# Reduces file sizes for faster transfer
+# ============================================
+
+<IfModule mod_deflate.c>
+    # Enable compression for text-based files
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    
+    # Don't compress already compressed files
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|zip|gz|bz2|rar)$ no-gzip dont-vary
+    
+    # Handle proxies properly
+    Header append Vary Accept-Encoding env=!dont-vary
+</IfModule>
+
+# ============================================
+# SECURITY HEADERS
+# Additional security for cached content
+# ============================================
+
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Enable XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

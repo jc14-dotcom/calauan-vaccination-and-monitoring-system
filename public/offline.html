@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Issue - Infant Vaccination System</title>
+    <meta name="theme-color" content="#7a5bbd">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-96x96.png">
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #7a5bbd 0%, #5a3d9d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .offline-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: #f3f0ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .offline-icon svg {
+            width: 50px;
+            height: 50px;
+            color: #7a5bbd;
+        }
+        
+        h1 {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .tagline {
+            color: #7a5bbd;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .retry-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #7a5bbd;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(122, 91, 189, 0.3);
+        }
+        
+        .retry-btn:hover {
+            background: #6b4ca8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 91, 189, 0.4);
+        }
+        
+        .retry-btn:active {
+            transform: translateY(0);
+        }
+        
+        .retry-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-text {
+            color: #6b7280;
+            font-size: 13px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .tips {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            text-align: left;
+        }
+        
+        .tips-title {
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .tips ul {
+            color: #6b7280;
+            font-size: 12px;
+            padding-left: 16px;
+            margin: 0;
+        }
+        
+        .tips li {
+            margin-bottom: 4px;
+        }
+        
+        .online-notice {
+            display: none;
+            margin-top: 16px;
+            padding: 12px;
+            background: #d1fae5;
+            border-radius: 8px;
+            color: #065f46;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .online-notice.show {
+            display: block;
+        }
+        
+        /* Error type specific styling */
+        .error-server .offline-icon {
+            background: #fef3c7;
+        }
+        .error-server .offline-icon svg {
+            color: #d97706;
+        }
+        .error-timeout .offline-icon {
+            background: #fce7f3;
+        }
+        .error-timeout .offline-icon svg {
+            color: #db2777;
+        }
+        
+        /* Server icon for server unavailable */
+        .server-icon {
+            display: none;
+        }
+        .error-server .wifi-icon {
+            display: none;
+        }
+        .error-server .server-icon {
+            display: block;
+        }
+        
+        /* Admin tips section */
+        .admin-tips {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: #fef3c7;
+            border-radius: 8px;
+            border-left: 3px solid #d97706;
+        }
+        .admin-tips.show {
+            display: block;
+        }
+        .admin-tips-title {
+            color: #92400e;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .admin-tips ul {
+            color: #92400e;
+            font-size: 11px;
+            padding-left: 16px;
+            margin: 0;
+        }
+        .admin-tips li {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <!-- WiFi icon (for network offline) -->
+            <svg class="wifi-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414"/>
+            </svg>
+            <!-- Server icon (for server unavailable) -->
+            <svg class="server-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+            </svg>
+        </div>
+        
+        <h1 id="errorTitle">Hindi Makakonekta</h1>
+        <p class="tagline">Infant Vaccination System</p>
+        <p id="errorMessage">Hindi makakonekta sa server. Maaaring offline ka o hindi tumatakbo ang server.</p>
+        
+        <button class="retry-btn" onclick="retryConnection()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Subukan Muli
+        </button>
+        
+        <div class="online-notice" id="onlineNotice">
+            <svg style="width: 16px; height: 16px; display: inline; vertical-align: middle; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Online na! Nagre-redirect...
+        </div>
+        
+        <div class="status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">Nagche-check ng koneksyon...</span>
+        </div>
+        
+        <div class="tips" id="userTips">
+            <div class="tips-title">Mga mungkahi:</div>
+            <ul id="tipsList">
+                <li>I-check kung naka-on ang WiFi o mobile data</li>
+                <li>Subukang lumipat sa ibang network</li>
+                <li>I-restart ang iyong device</li>
+                <li>Maghintay ng ilang minuto at subukan muli</li>
+            </ul>
+        </div>
+        
+        <div class="admin-tips" id="adminTips">
+            <div class="admin-tips-title">Para sa Administrator/Developer:</div>
+            <ul>
+                <li>Tiyaking tumatakbo ang PHP development server (php artisan serve)</li>
+                <li>I-check kung tama ang port number (default: 8000)</li>
+                <li>Tingnan kung may error sa terminal</li>
+                <li>Subukang i-restart ang Laragon o development server</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Error type definitions (matching service worker)
+        const ERROR_TYPES = {
+            NETWORK_OFFLINE: 'network_offline',
+            SERVER_UNAVAILABLE: 'server_unavailable',
+            TIMEOUT: 'timeout',
+            UNKNOWN: 'unknown'
+        };
+        
+        // Get error type from service worker (injected via script tag)
+        const errorType = window.OFFLINE_ERROR_TYPE || ERROR_TYPES.UNKNOWN;
+        
+        // Error messages based on type
+        const errorMessages = {
+            [ERROR_TYPES.NETWORK_OFFLINE]: {
+                title: 'Ikaw ay Offline',
+                message: 'Walang koneksyon sa internet. Pakisuri ang iyong WiFi o mobile data at subukan muli.',
+                statusText: 'Walang koneksyon sa internet',
+                showAdminTips: false,
+                containerClass: 'error-offline'
+            },
+            [ERROR_TYPES.SERVER_UNAVAILABLE]: {
+                title: 'Hindi Makonekta sa Server',
+                message: 'Ang server ay kasalukuyang hindi available. Maaaring hindi ito tumatakbo o nagme-maintenance.',
+                statusText: 'Server hindi available',
+                showAdminTips: true,
+                containerClass: 'error-server'
+            },
+            [ERROR_TYPES.TIMEOUT]: {
+                title: 'Nag-timeout ang Koneksyon',
+                message: 'Masyadong matagal ang pagsagot ng server. Maaaring mabagal ang koneksyon o busy ang server.',
+                statusText: 'Nag-timeout ang request',
+                showAdminTips: false,
+                containerClass: 'error-timeout'
+            },
+            [ERROR_TYPES.UNKNOWN]: {
+                title: 'Hindi Makakonekta',
+                message: 'Hindi makakonekta sa server. Pakisuri ang iyong koneksyon at subukan muli.',
+                statusText: 'Nagche-check ng koneksyon...',
+                showAdminTips: false,
+                containerClass: ''
+            }
+        };
+        
+        // Apply error-specific UI
+        function applyErrorUI() {
+            const config = errorMessages[errorType] || errorMessages[ERROR_TYPES.UNKNOWN];
+            
+            document.getElementById('errorTitle').textContent = config.title;
+            document.getElementById('errorMessage').textContent = config.message;
+            document.getElementById('statusText').textContent = config.statusText;
+            
+            if (config.containerClass) {
+                document.querySelector('.offline-container').classList.add(config.containerClass);
+            }
+            
+            if (config.showAdminTips) {
+                document.getElementById('adminTips').classList.add('show');
+                // Update tips for server issues
+                document.getElementById('tipsList').innerHTML = `
+                    <li>Maghintay ng ilang minuto at subukan muli</li>
+                    <li>I-refresh ang page (Ctrl+Shift+R)</li>
+                    <li>Tingnan kung gumagana ang ibang websites</li>
+                    <li>I-clear ang browser cache kung kinakailangan</li>
+                `;
+            }
+            
+            // Detect if this might be a development environment
+            if (window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' ||
+                window.location.port === '8000') {
+                document.getElementById('adminTips').classList.add('show');
+            }
+        }
+        
+        // Check connection status with multiple methods
+        async function checkConnection() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            // First check navigator.onLine
+            if (!navigator.onLine) {
+                statusDot.style.background = '#ef4444';
+                statusText.textContent = 'Walang koneksyon sa internet';
+                return false;
+            }
+            
+            // Try to reach the server
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                
+                const response = await fetch('/manifest.json', { 
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                
+                if (response.ok) {
+                    statusDot.style.background = '#22c55e';
+                    statusText.textContent = 'Online na! Nagre-redirect...';
+                    document.getElementById('onlineNotice').classList.add('show');
+                    
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                    return true;
+                }
+            } catch (error) {
+                // Server still unavailable
+                if (navigator.onLine) {
+                    statusDot.style.background = '#f59e0b';
+                    statusText.textContent = 'May internet, pero hindi maabot ang server';
+                } else {
+                    statusDot.style.background = '#ef4444';
+                    statusText.textContent = 'Walang koneksyon sa internet';
+                }
+            }
+            return false;
+        }
+        
+        // Retry connection
+        async function retryConnection() {
+            const btn = document.querySelector('.retry-btn');
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="animate-spin" style="animation: spin 1s linear infinite;" fill="none" viewBox="0 0 24 24">
+                    <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Nagche-check...
+            `;
+            
+            const isOnline = await checkConnection();
+            
+            if (!isOnline) {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Subukan Muli
+                `;
+            }
+        }
+        
+        // Listen for online event
+        window.addEventListener('online', () => {
+            document.getElementById('statusDot').style.background = '#f59e0b';
+            document.getElementById('statusText').textContent = 'Nagche-check ng server...';
+            checkConnection();
+        });
+        
+        window.addEventListener('offline', () => {
+            document.getElementById('statusDot').style.background = '#ef4444';
+            document.getElementById('statusText').textContent = 'Walang koneksyon sa internet';
+        });
+        
+        // Initialize on load
+        applyErrorUI();
+        checkConnection();
+        
+        // Periodic check every 10 seconds
+        setInterval(checkConnection, 10000);
+        
+        // Add spin animation
+        const style = document.createElement('style');
+        style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
