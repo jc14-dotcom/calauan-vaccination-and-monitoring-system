@@ -23,12 +23,17 @@ yarn-error.log
 /.zed
 .phase0-backups/
 
+# Local-only application data and historical working files
+_archive/
+.github/workflows/
+database/exports/
+database/*.sqlite
+
 storage/app/firebase/
 storage/app/public/
 storage/logs/
+storage/framework/
 bootstrap/cache/
-database/*.sqlite
-database/exports/
 *.pem
 *.key
 *.p12
@@ -37,3 +42,4 @@ database/exports/
 
 .codegpt
 .mimocode
+desktop.ini
